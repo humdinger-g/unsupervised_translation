@@ -1,0 +1,24 @@
+program: icp_sweep.py
+method: random
+parameters:
+  procrustes_init:
+    value: 'same'
+  norm:
+    values: [True]
+  cut:
+    values: [10000, 20000]
+  batch_size:
+    values: [128]
+  lr:
+    values: [0.01]
+  num_epochs:
+    value: 300
+  scheduler:
+    values: [None]
+  random_state:
+    min: 1
+    max: 200
+name: full_icp_run
+metric:
+  name: loss
+  goal: minimize

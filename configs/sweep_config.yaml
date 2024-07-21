@@ -1,0 +1,20 @@
+program: icp_sweep.py
+method: grid
+parameters:
+  cut:
+    values: [10000, 20000]
+  batch_size:
+    values: [96, 128, 256]
+  lr:
+    values: [0.01, 0.02]
+  num_epochs:
+    value: 300
+  scheduler:
+    value: None
+  random_state:
+    min: 0
+    max: 100
+name: full_icp_run
+metric:
+  name: loss
+  goal: minimize

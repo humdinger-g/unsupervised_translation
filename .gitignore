@@ -1,0 +1,13 @@
+fasttext_data/*
+images/
+xf/
+evaluation.ipynb
+__pycache__/
+final_results/
+flagged/
+inference_weights/
+linear_weights/
+unsuper_venv/
+wandb/
+interface.py
+.DS_Store
