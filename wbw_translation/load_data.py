@@ -55,6 +55,9 @@ def download_fasttext_data(languages: List[str],
         path (str): path to where this data will be downloaded
         num (int, optional): number of most frequent embeddings to save. Defaults to 10000.
     """
+    
+    if not os.path.exists(path):
+        os.makedirs(path, exist_ok=True)
 
     for lang in tqdm(languages):
         try:
@@ -124,7 +127,7 @@ def unarchive(gz_file_path: str, output_dir: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download FastText embeddings")
-    parser.add_argument("--path", type=str, required=True, help="Path to save the data")
+    parser.add_argument("--path", type=str, default='fasttext_data', required=True, help="Path to save the data")
     parser.add_argument("--languages", type=str, nargs='+', required=True, help="List of ISO 639 language codes to download")
     parser.add_argument("--num", type=int, default=10000, help="Number of most frequent embeddings to save")
 
