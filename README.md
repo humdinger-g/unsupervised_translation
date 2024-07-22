@@ -1,6 +1,6 @@
 # Unsupervised translation
 
-This repo contains code for unsupervised translation between different languages that is performed in two stages. Firstly, the text is translated word-by-word by a linear model trained with iterative closest point algorithm, the code is in `wbw_translation` . Then language model in target language is applied to fix the translation and make it more readable, code notebooks for that are in `text_correction` . You can find a detailed information about this work in report.md
+This repo contains code for unsupervised translation between different languages that is performed in two stages. Firstly, the text is translated word-by-word by a linear model trained with iterative closest point algorithm, the code is in `wbw_translation` . Then language model in target language is applied to fix the translation and make it more readable, code notebooks for that are in `text_correction` . You can find a detailed information about this work in the [report](https://knowing-racer-d3e.notion.site/Report-017cad3a19a54a92bef366392743bba8).
 
 ### Environment
 
