@@ -11,10 +11,8 @@ This translation pipeline consists of two stages:
 
 Let $\mathcal{X},\mathcal{Y}\in \mathbb{R^{n\times d}}$ be embedding matrices of source and target language. Here we use default fasttext embeddings with $d=300$ which can be found [here](https://fasttext.cc/docs/en/crawl-vectors.html) or downloaded using `utils.load_fasttext_data` . We load $n=10000$ or $n=20000$ embeddings, sort them in ascending order of Euclidean norm and leave top $5000$. After that we find same words in both languages (which are mostly numbers and punctuation) and perform Procrustes mapping from source to target and backwards:
 
-$$
-||X_\mathsf{same}W_{xy}-Y_\mathsf{same}||_F\to \min\limits_{W_{xy}\in O(d)}\\
-||X_\mathsf{same}-Y_\mathsf{same}W_{yx}||_F\to \min\limits_{W_{yx}\in O(d)}
-$$
+$$||X_\mathsf{same}W_{xy}-Y_\mathsf{same}||_F\to \min\limits_{W_{xy}\in O(d)}\\
+||X_\mathsf{same}-Y_\mathsf{same}W_{yx}||_F\to \min\limits_{W_{yx}\in O(d)}$$
 
 where $X_{\mathsf{same}}$ and $Y_{\mathsf{same}}$ are embeddings of the coinciding words in the same order and $O(d)$ is a group of all orthogonal matrices of order $d$.
 
@@ -27,23 +25,17 @@ During training at each epoch we:
 3. Map each embedding in the batch to its nearest neighbor in other language. Denote by $\widetilde{Y}_i$ batch of the closest embeddings to the ones from $X_i$ and similarly $\widetilde{X}_i$ for $Y_i$
 4. Calculate the mapping losses: distances from embeddings in one domain to its closest neighbors in the other domain:
     
-    $$
-    \mathsf{map}_x=||X_iW_{xy}-\widetilde{Y}_i||,\ \mathsf{map}_y=||Y_iW_{yx}-\widetilde{X}_i||
-    $$
+    $$\mathsf{map}_x=||X_iW_{xy}-\widetilde{Y}_i||,\ \mathsf{map}_y=||Y_iW_{yx}-\widetilde{X}_i||$$
     
 5. Calculate reconstruction loss:
     
-    $$
-    \mathsf{rec}=||X_iW_{xy}W_{yx}-X_i||+||Y_iW_{yx}W_{xy}-Y_i||
-    $$
+    $$\mathsf{rec}=||X_iW_{xy}W_{yx}-X_i||+||Y_iW_{yx}W_{xy}-Y_i||$$
     
     Reconstruction loss forces coherent translation in both directions. It ensures that if $y_i$ is the translation of $x_i$, then $x_i$ is the translation of $y_i$. In other words it is similar to the constraint of $W_{xy}W_{yx}=W_{yx}W_{xy}=I$, but applied only for separate batches (and in practice these products don’t differ from identity matrices much). Higher values of $\lambda$ can lead to solutions closer to orthogonal ones, but experiments has shown that accuracy falls in such cases, since languages are not entirely similar.
     
 6. Total loss is 
     
-    $$
-    \mathcal{L}=\mathsf{map}_x+\mathsf{map}_y+\lambda \cdot \mathsf{rec}
-    $$
+    $$\mathcal{L}=\mathsf{map}_x+\mathsf{map}_y+\lambda \cdot \mathsf{rec}$$
     
 
 ---
@@ -53,7 +45,7 @@ You can see the visualisation of this algorithm on randomly generated 2d data. S
 
 <div style="text-align: center;">
 
-  <img src="files/icp_loop.gif" alt="Description of GIF" style="width: 60%; max-width: 800px;"/>
+  <img src="files/icp_loop.gif" style="width: 60%; max-width: 800px;"/>
 
 </div>
 
@@ -72,26 +64,14 @@ Visualization for real data is less informative, due to higher dimensinality: ev
 | ja | 0.048 | 0.055 | 17.894 | 12.835 | 3.371 | 3.087 | 0.515 | 0.264 |
 
 We can see that norm sort makes intrinsic dimension of input embeddings larger (at least for European languages), resulting in more informative inputs. Anisotropy is increased as well indicating that embeddings become more aligned along a single direction which potentially could make the embedding transfer easier.
-
-<!-- - Anisotropy calculation
-    
-    Let $X\in\mathbb{R}^{n\times d}$ be a set of $n$ points in $d$-dimensional space. Firstly, we need to recenter these points by $X^*=X- I\mu$, where $\mu$ is a column vector of mean values of coordinates for all points and $I$ is a $n\times n$ identity matrix. Then we calculate its covariance matrix $C=n^{-1}(X^*)^TX^*$. Let $\lambda_1<\lambda_2<...<\lambda _d$ be its eigenvalues, then anisotropy is
-    
-    $$
-    \mathsf{anisotropy}(X)=\cfrac{\lambda _d}{\sum\limits_{i=1}^d\lambda _i}
-    $$
-    
-    As it follows from formulation, this value shows how much large is the maximum eigenvalue, normed by the sum of all of them. The higher this value is, the more these points are stretched along one direction (specifically, the eigenvector corresponding to the largest eigenvalue) -->
     
 
 <details>
   <summary>Anisotropy calculation</summary>
   
-  Let \(X \in \mathbb{R}^{n \times d}\) be a set of \(n\) points in \(d\)-dimensional space. Firstly, we need to recenter these points by \(X^* = X - I \mu\), where \(\mu\) is a column vector of mean values of coordinates for all points and \(I\) is an \(n \times n\) identity matrix. Then we calculate its covariance matrix \(C = n^{-1}(X^*)^T X^*\). Let \(\lambda_1 < \lambda_2 < \ldots < \lambda_d\) be its eigenvalues, then anisotropy is:
+  Let $X\in\mathbb{R}^{n\times d}$ be a set of $n$ points in $d$-dimensional space. Firstly, we need to recenter these points by $X^*=X- I\mu$, where $\mu$ is a column vector of mean values of coordinates for all points and $I$ is a $n\times n$ identity matrix. Then we calculate its covariance matrix $C=n^{-1}(X^*)^TX^*$. Let $\lambda_1<\lambda_2<...<\lambda _d$ be its eigenvalues, then anisotropy is
 
-  $$
-  \text{anisotropy}(X) = \frac{\lambda_d}{\sum_{i=1}^d \lambda_i}
-  $$
+  $$\text{anisotropy}(X) = \frac{\lambda_d}{\sum_{i=1}^d \lambda_i}$$
 
   As it follows from the formulation, this value shows how much larger is the maximum eigenvalue, normed by the sum of all of them. The higher this value is, the more these points are stretched along one direction (specifically, the eigenvector corresponding to the largest eigenvalue).
 
