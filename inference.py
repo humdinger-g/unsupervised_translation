@@ -51,12 +51,14 @@ def word_by_word_translation(text: str,
             "Prefixes are available only for en and ru languages"
         
     if (source_lang, target_lang) not in embeddings:
+        print('loading embeddings...')
         x_embeds, x_words, y_embeds, y_words = load_data('fasttext_data', source_lang, target_lang)
         embeddings[(source_lang, target_lang)] = x_embeds, x_words, y_embeds, y_words
     
     x_embeds, x_words, y_embeds, y_words = embeddings[(source_lang, target_lang)]
 
     if (source_lang, target_lang) not in models:
+        print('loading wbw model...')
         W = torch.load(f'inference_weights/model-{source_lang}-{target_lang}')['W.weight']
         model = InferenceModel(W)
         models[(source_lang, target_lang)] = model
@@ -113,6 +115,7 @@ def load_text_correction_model(model_type='large'):
 
 def text_correction(text, model_type='large'):
     if text_correction_model is None or tokenizer is None:
+        print('loading text correction model...')
         load_text_correction_model(model_type=model_type)
 
     text_correction_model.eval()
