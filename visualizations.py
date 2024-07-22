@@ -23,44 +23,12 @@ def get_2d_embeds(x_embeds: torch.Tensor,
     return x2d, y2d
 
 
-# def plot_embeddings(x_embeds, y_embeds, x_words, y_words,
-#                     source_lang='source', target_lang='target'):
-#     x_scatter = go.Scatter(
-#         x=x_embeds[:, 0],
-#         y=x_embeds[:, 1],
-#         mode='markers',
-#         marker=dict(color='blue'),
-#         text=x_words,
-#         opacity=0.3,
-#         name=f'{source_lang} embeds'
-#     )
-
-#     y_scatter = go.Scatter(
-#         x=y_embeds[:, 0],
-#         y=y_embeds[:, 1],
-#         mode='markers',
-#         marker=dict(color='red'),
-#         text=y_words,
-#         opacity=0.3,
-#         name=f'{target_lang} embeds'
-#     )
-
-#     fig = go.Figure(data=[x_scatter, y_scatter])
-
-#     fig.update_layout(
-#         title="Embeddings",
-#         xaxis_title="",
-#         yaxis_title="",
-#         hovermode='closest'
-#     )
-
-#     fig.show()
-
-
-
-
 def plot_embeddings(x_embeds, y_embeds, x_words, y_words,
                     source_lang='source', target_lang='target', show_labels=False):
+    """Plots x_embeds and y_embeds with corresponding text labels. Ensure that input
+    embeddings are in 2d, use get_2d_embeds for that
+    """
+
     x_scatter = go.Scatter(
         x=x_embeds[:, 0],
         y=x_embeds[:, 1],
@@ -102,6 +70,8 @@ def plot_k_embeddings(source_lang: str,
                       target_lang: str,
                       do_norm: bool = False,
                       k: int = 100) -> None:
+    """Plots top k embeddings with the least norm"""
+
     x_embeds, x_words, y_embeds, y_words = load_data(
         'fasttext_data', source_lang, target_lang
     )

@@ -83,7 +83,7 @@ model = LinearModel(300, init=(Wxy.T, Wyx.T))
 # train the model
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 losses = icp.train_iteration(model, optimizer, scheduler=None,
-                             num_epochs=60, batch_size=128,
+                             num_epochs=200, batch_size=128,
                              random_state=42)
                              
 # get sample translations; change seed to get different sample
