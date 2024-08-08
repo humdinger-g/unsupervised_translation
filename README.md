@@ -7,7 +7,7 @@ This repo contains code for unsupervised translation between different languages
 clone repository and install required packages:
 
 ```bash
-git clone https://github.com/humdinger-g/unsupervised_translation
+git clone https://github.com/humdinger-g/unsupervised_translation.git
 cd unsupervised_translation
 python3 -m venv venv
 source venv/bin/activate
